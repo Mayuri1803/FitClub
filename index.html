@@ -13,11 +13,14 @@
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/style.css">
-    <link rel = "stylesheet" href = "css/searchstyle.css"
+    <link rel = "stylesheet" href = "css/searchstyle.css">
+    <link rel = "stylesheet" href = "css/formStyle.css">
 
     <!-- angular-->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
     <script src="js/app.js"></script>
+    
 
     
 
@@ -91,7 +94,7 @@
 
 <!-- home section ends -->
 
-<!-- about section starts  -->
+<!-- about section starts wiht ANGULAR form validation  -->
 
 <section class="about" id="about">
 
@@ -128,9 +131,73 @@
                 <h3><i class="fas fa-check"></i>workout</h3>
                 <p>Exercise releases endorphins, which can improve your mood, reduce stress and anxiety, and boost your overall mental health.</p>
             </div>
-        </div>
-        <a href="#" class="btn">read more</a>
-    </div>
+
+
+            <!-- ANGULAR FORM-->    
+                <div class="overlay" ng-show="showJoinForm">
+                  <div class="modal">
+                    <a href="#" class="close" ng-click="showJoinForm = false">&times;</a>
+                    <form name="joinForm" ng-submit="submitForm()">
+                      <label for="name">Name:</label>
+                      <input type="text" id="name" name="name" ng-model="user.name" ng-required="true"><br><br>
+                      <div ng-show="joinForm.name.$error.required && !joinForm.name.$pristine" class="error">Name is required.</div>
+                      <label for="email">Email:</label>
+                      <input type="email" id="email" name="email" ng-model="user.email" ng-required="true"><br><br>
+                      <div ng-show="joinForm.email.$error.required && !joinForm.email.$pristine" class="error">Email is required.</div>
+                      <div ng-show="joinForm.email.$error.email && !joinForm.email.$pristine" class="error">Please enter a valid email address.</div>
+                      <input type="submit" value="Submit" ng-disabled="joinForm.$invalid">
+                    </form>
+                  </div>
+                </div>
+              
+              
+            <!-- working form-->
+            <a href="#" class="btn" id="joinNowBtn">Join Now</a>
+            <div class="overlay" id="overlay">
+              <div class="modal">
+                <a href="#" class="close">&times;</a>
+                <form action="http://localhost:8000/users" method="POST" onsubmit="showMessage(event)">
+
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" name="name" required><br><br>
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" name="email" required><br><br>
+                  <label for="gender">Gender:</label>
+                  <select id="gender" name="gender" required>
+                    <option value="">-- Select --</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select><br><br>
+                  <input type="submit" value="Submit">
+                </form>
+              </div>
+            </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script>
+              function showMessage(event) {
+                event.preventDefault();
+                alert("Check your email for further details.");
+              }
+            
+              $(document).ready(function() {
+                $("#joinNowBtn").click(function(event) {
+                  event.preventDefault();
+                  $("#overlay").fadeIn(500);
+                });
+            
+                $(".close").click(function() {
+                  $("#overlay").fadeOut(500);
+                });
+            
+                // Add event listener to the form submit event
+                $("form").submit(function(event) {
+                  submitForm(event);
+                });
+              });
+            </script>
+            
+
 
 </section>
 
@@ -171,10 +238,7 @@
     </section>
   
   </div>
-  
-   
-  
-   
+     
 
 <!-- features section ends -->
 
